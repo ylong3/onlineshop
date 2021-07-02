@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.landsall.switchapi.mapper.RelationUserGameMapper">
+
+
+    <select id="SelectCollectByUserId" resultType="Collect">
+        SELECT rug.id,rug.game_id,gi.game_name,gi.game_price
+        FROM relation_user_game rug
+                 LEFT JOIN game_info gi ON rug.game_id = gi.game_id
+        WHERE rug.user_id = ${userId}
+    </select>
+</mapper>

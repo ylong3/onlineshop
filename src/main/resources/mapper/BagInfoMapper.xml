@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.landsall.switchapi.mapper.BagInfoMapper">
+    <select id="SelectBagInfoListByUserId" resultType="Bag">
+        SELECT bi.id,bi.game_id,gi.game_name as 'name',gi.url_cover as cover,gi.game_price as price,bi.count,bi.is_select
+        FROM bag_info bi
+                 LEFT JOIN game_info gi on bi.game_id = gi.game_id
+        WHERE bi.user_id = ${userId}
+        <if test="filterSelect == true">
+            and bi.is_select
+        </if>
+    </select>
+
+
+
+
+
+</mapper>

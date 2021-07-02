@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.landsall.switchapi.mapper.OrderInfoMapper">
+    
+<!--    <resultMap id="order" type="Order">
+        <result property="id" column="id"/>
+        <result property="gamePrice" column="game_price"/>
+        <result property="count" column="count"/>
+        <result property="username" column="username"/>
+        <result property="gameName" column="game_name"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="state" column="state"/>
+    </resultMap>-->
+
+    <select id="selectOrderList" resultType="Order">
+        SELECT
+            oi.id,
+            oi.order_no,
+            oit.game_id,
+            gi.game_price,
+            gi.url_cover AS cover,
+            oit.count,
+            ui.username,
+            gi.game_name,
+            oi.gmt_create AS order_time,
+            oi.state
+        FROM
+            order_info oi
+                LEFT JOIN order_item oit ON oit.order_no = oi.order_no
+                LEFT JOIN game_info gi ON gi.game_id = oit.game_id
+                LEFT JOIN user_info ui ON ui.id = oi.user_id
+        WHERE oi.user_id = ${userId} and oi.state BETWEEN ${min} and ${max}
+    </select>
+
+<!--    <select id="getOneById" resultType="Order">
+        SELECT oi.id,oi.game_id,gi.game_price,gi.url_cover as cover,oi.count,ui.username,gi.game_name,oi.gmt_create as order_time,oi.state
+        FROM order_info oi
+                 LEFT JOIN game_info gi on gi.game_id = oi.game_id
+                 LEFT JOIN user_info ui on ui.id = oi.user_id
+        WHERE oi.id = ${id}
+    </select>-->
+
+    <select id="listOrderItem" resultType="OrderItemVo">
+        SELECT
+            oi.id,
+            oit.game_id,
+            gi.game_price,
+            oit.count,
+            gi.url_cover AS cover,
+            gi.game_name
+        FROM
+            order_info oi
+                LEFT JOIN order_item oit ON oit.order_no = oi.order_no
+                LEFT JOIN game_info gi ON gi.game_id = oit.game_id
+        WHERE
+            oi.order_no = ${orderNo}
+    </select>
+
+</mapper>
